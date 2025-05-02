@@ -11,13 +11,13 @@ export const metadata: Metadata = {
   title: 'Customers',
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
+export default async function Page(props: {
+  searchParams?: Promise<{
     query?: string;
-  };
+    page?: string;
+  }>;
 }) {
+  const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
   const customers = await fetchFilteredCustomers(query);
 
@@ -39,3 +39,40 @@ export default async function Page({
     </main>
   );
 }
+
+
+
+// import { fetchFilteredCustomers } from '@/app/lib/data';
+// import CustomersTable from '@/app/ui/customers/table';
+// import { Metadata } from 'next';
+// import { Button } from '@/app/ui/button';
+// import Link from 'next/link';
+
+// export const metadata: Metadata = {
+//   title: 'Customers',
+// };
+
+// export default async function Page(props: {
+//   searchParams?: Promise<{
+//     query?: string;
+//     page?: string;
+//   }>;
+// }) {
+//   // const query = searchParams?.query || '';
+  // const searchParams = await props.searchParams;
+  // const query = searchParams?.query || '';
+  // // const currentPage = Number(searchParams?.page) || 1;
+  // const customers = await fetchFilteredCustomers(query);
+
+//   return (
+//     <main className="w-full">
+//       <div className="flex w-full items-center justify-between">
+//         <h1 className="text-2xl">Customers</h1>
+//         <Link href="/dashboard/customers/create">
+//           <Button>Add Customer</Button>
+//         </Link>
+//       </div>
+//       <CustomersTable customers={customers} />
+//     </main>
+//   );
+// }
