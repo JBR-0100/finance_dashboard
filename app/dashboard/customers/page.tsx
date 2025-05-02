@@ -5,6 +5,8 @@ import { Button } from '@/app/ui/button';
 import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
+import { Suspense } from 'react';
+
 export const metadata: Metadata = {
   title: 'Customers',
 };
@@ -31,7 +33,9 @@ export default async function Page({
           <Button>Add Customer</Button>
         </Link>
       </div>
-      <CustomersTable customers={customers} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CustomersTable customers={customers} />
+      </Suspense>
     </main>
   );
 }
