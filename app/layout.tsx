@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: 'Auroville Dashboard',
   },
   description: 'The official dashboard for Auroville management.',
-  metadataBase: new URL('https://project-finance-dashboard.vercel.app/'),
+  metadataBase: new URL('https://auroville-finance.netlify.app/'),
 };
 
 export default function RootLayout({
