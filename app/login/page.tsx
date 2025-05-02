@@ -9,10 +9,11 @@ export default function LoginPage() {
         <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
           <AurovilleLogo />
         </div>
-        <Suspense>
+        <a href="/dashboard">pppppp</a>
+        {/* <Suspense>
           <LoginForm />
-        </Suspense>
-        
+        </Suspense> */}
+
       </div>
     </main>
   );
