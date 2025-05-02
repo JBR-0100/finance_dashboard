@@ -6,9 +6,7 @@ import { redirect } from 'next/navigation';
 import postgres from 'postgres';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-
-
-
+// import { sql } from '@vercel/postgres';
 
 export async function authenticate(
     prevState: string | undefined,
@@ -29,8 +27,6 @@ export async function authenticate(
     }
   }
 
-
-
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
  
 const FormSchema = z.object({
@@ -50,7 +46,6 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
-
 export type State = {
     errors?: {
       customerId?: string[];
@@ -60,8 +55,7 @@ export type State = {
     message?: string | null;
   };
    
-
-  export async function createInvoice(prevState: State, formData: FormData) {
+export async function createInvoice(prevState: State, formData: FormData) {
     // Validate form using Zod
     const validatedFields = CreateInvoice.safeParse({
       customerId: formData.get('customerId'),
@@ -100,8 +94,6 @@ export type State = {
     redirect('/dashboard/invoices');
   }
 
-
-
 export async function updateInvoice(
     id: string,
     prevState: State,
@@ -139,4 +131,41 @@ export async function updateInvoice(
 export async function deleteInvoice(id: string) {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
     revalidatePath('/dashboard/invoices');
+}
+
+const CustomerSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  image_url: z.string().url('Invalid image URL'),
+});
+
+export async function createCustomer(prevState: any, formData: FormData) {
+  const validatedFields = CustomerSchema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    image_url: formData.get('image') // In a real app, you'd upload this to a storage service
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Customer.',
+    };
+  }
+
+  const { name, email, image_url } = validatedFields.data;
+
+  try {
+    await sql`
+      INSERT INTO customers (name, email, image_url)
+      VALUES (${name}, ${email}, ${image_url})
+    `;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to Create Customer.',
+    };
+  }
+
+  revalidatePath('/dashboard/customers');
+  redirect('/dashboard/customers');
 }
