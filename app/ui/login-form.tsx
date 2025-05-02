@@ -14,10 +14,7 @@ import { useSearchParams } from 'next/navigation';
  
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || 
-    (process.env.NODE_ENV === 'production' 
-      ? 'https://project-finance-dashboard.vercel.app/dashboard'
-      : '/dashboard');
+  const callbackUrl = searchParams.get('callbackUrl') || 'https://project-finance-dashboard.vercel.app/dashboard';
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined,

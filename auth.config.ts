@@ -13,10 +13,8 @@ export const authConfig = {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
-        // For production, use the absolute URL
-        const baseUrl = process.env.NODE_ENV === 'production' 
-          ? 'https://project-finance-dashboard.vercel.app'
-          : nextUrl.origin;
+        // Always use absolute URL for redirects
+        const baseUrl = 'https://project-finance-dashboard.vercel.app';
         return Response.redirect(new URL('/dashboard', baseUrl));
       }
       return true;
