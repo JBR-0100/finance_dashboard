@@ -4,10 +4,10 @@ import { lusitana } from '@/app/ui/fonts';
 export default function AurovilleLogo() {
   return (
     <div
-      className={`${lusitana.className} flex flex-row items-center leading-none text-white w-full pr-4`}
+      className={`${lusitana.className} flex flex-row items-center leading-none text-white`}
     >
-      <GlobeAltIcon className="h-14 w-14 mr-4" />
-      <p className="text-[35px]">Auroville</p>
+      <GlobeAltIcon className="h-12 w-12 rotate-[15deg]" />
+      <p className="text-[40px]">Auroville</p>
     </div>
   );
-} 
+}
